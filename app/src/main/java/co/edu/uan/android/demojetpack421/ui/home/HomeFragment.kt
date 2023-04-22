@@ -34,10 +34,6 @@ class HomeFragment : Fragment() {
             homeViewModel.changeText("Nuevo valor")
         }
 
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
         return root
     }
 
