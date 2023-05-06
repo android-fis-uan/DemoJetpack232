@@ -1,14 +1,20 @@
 package co.edu.uan.android.demojetpack421.ui.home
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.edu.uan.android.demojetpack421.apis.CatApi
+import co.edu.uan.android.demojetpack421.databases.CatDatabase
+import co.edu.uan.android.demojetpack421.databases.CatEntity
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(app: Application) : AndroidViewModel(app) {
 
     //var text:String = ""
 
@@ -31,7 +37,10 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             val api = CatApi.getInstance()
             val cats = api.getCats()
-            catUrl.value = cats.get(0).url
+            val cat = cats.get(0)
+            catUrl.value = cat.url
+            val db = CatDatabase.getInstance(getApplication())
+            db.catDao().save(CatEntity(cat.id, cat.url, cat.width, cat.height))
         }
 
     }
